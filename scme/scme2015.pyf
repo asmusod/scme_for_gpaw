@@ -3,14 +3,16 @@
 
 python module scme2015 ! in 
     interface  ! in :scme2015
-        subroutine main(natm,asecoords,asebox,eqm,faout,epotout,etout) ! in :scme2015:main.f
-            integer, optional,intent(in),check((len(asecoords))/(3)>=natm),depend(asecoords) :: natm=(len(asecoords))/(3)
+        subroutine main(natm,asecoords,asebox,eqm,deqm,faout,epotout,etout,qpoleout) ! in :scme2015:main.f
+            integer optional,intent(in),check((len(asecoords))/(3)>=natm),depend(asecoords) :: natm=(len(asecoords))/(3)
             real*8 dimension(3 * natm),intent(in) :: asecoords
             real*8 dimension(3),intent(in) :: asebox
             real*8 dimension(3,natm/3),intent(in),depend(natm) :: eqm
+            real*8 dimension(3,3,natm/3),intent(in),depend(natm) :: deqm
             real(kind=8) dimension(3 * natm),intent(out),depend(natm) :: faout
             real*8 intent(out) :: epotout
             real*8 dimension(3,natm/3),intent(out),depend(natm) :: etout
+            real*8 dimension(3,3,natm/3),intent(out),depend(natm) :: qpoleout
             integer dimension(15000) :: itag
             integer :: natoms
             integer :: natype

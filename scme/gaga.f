@@ -26,7 +26,7 @@ c23456789012345678901234567890123456789012345678901234567890123456789012
 c        10        20        30        40        50        60        70
 
       subroutine gagafe(nAtms, raOri, itagl, fa, uTot, 
-     $                virial,ETOUT,eQM,natm)
+     $                virial,ETOUT,eQM,dEQM,natm,QPOLEOUT)
 
 c      implicit real*8 (a-h,o-z)
 
@@ -58,10 +58,13 @@ c     Electric fields
 c     QM field from gpaw edens in from ASE
       real*8 eQM
       intent(in) eQM
+      real*8 dEQM
+      intent(in) dEQM
                 
 c     Derivatives of E
       real*8 dEddr(3,3,maxCoo/3), dEqdr(3,3,maxCoo/3)
       real*8 dEhdr(3,3,maxCoo/3), dEtdr(3,3,maxCoo/3)
+      real*8 dEtdrQM(3,3,maxCoo/3)
 
 c     High order derivatives of the potential
       real*8 d1v(3,maxCoo/3), d2v(3,3,maxCoo/3), d3v(3,3,3,maxCoo/3)
@@ -106,7 +109,8 @@ C     Out to ASE
       real*8 ETOUT(3,nAtms(2))
       integer ct
       intent(out) ETOUT
-
+      real*8 QPOLEOUT(3,3,nAtms(2))
+      intent(out) QPOLEOUT
 
 C     Debug
       integer     p, q, r, s
@@ -333,10 +337,11 @@ c         ii = ii + 1
 c        FOR QM/MM embedding via dpole
 
          call addDfields(dEhdr, dEddr, dEtdr, nM)
+         call addDfieldsQM(dEhdr, dEddr, dEtdr, dEtdrQM, dEQM, nM)
 
-c     Induce dipoles and quadrupoles
+c     Induce dipoles and quadrupoles - qpoles NOT QM interfaced!
          converged = .true.
-         call induceDipole(dPole, dpole0, eTQM, dEtdr, dd, dq, hp, nM
+         call induceDipole(dPole, dpole0, eTQM, dEtdrQM, dd, dq, hp, nM
      $        , converged)
          call induceQpole(qPole, qpole0, eT, dEtdr, dq, qq, nM,
      $        converged) 
@@ -347,6 +352,14 @@ c    get out eT for ase - 2015 hack get out DIPOLE
       do ct = 1,nAtms(2)
         do i = 1,3
           ETOUT(i,ct) = dPole(i,ct)
+        end do
+      end do
+c    get out qpoles for ase
+      do ct = 1,nAtms(2)
+        do i = 1,3
+          do j = 1,3
+            QPOLEOUT(i,j,ct) = qPole(i,j,ct)
+          end do
         end do
       end do
 
@@ -524,7 +537,7 @@ c$$$     $           *(i-1)+3)
 c$$$         end do
 c$$$      end if
 
-      print '(4f16.10)', uTot, uES, uDisp, uCore
+c      print '(4f16.10)', uTot, uES, uDisp, uCore
 c$$$      stop
 
 C Debug

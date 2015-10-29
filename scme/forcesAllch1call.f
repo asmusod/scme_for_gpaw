@@ -8,14 +8,16 @@ c
 C     THIS SUBROUTINE COMPUTES THE FORCES by calling GAGAFE for each type of              
 c     interaction.                                                                        
 
-      SUBROUTINE FORCE(eQM,FAOUT,ETOUT,natm)
+      SUBROUTINE FORCE(eQM,dEQM,FAOUT,ETOUT,natm,QPOLEOUT)
 
       implicit real*8 (a-h,o-z)
       integer natm
       real*8 eQM(3,natm/3)
       intent(in) eQM
-      dimension FAOUT(*), ETOUT(*)
-      intent(out) FAOUT, ETOUT
+      real*8 dEQM(3,3,natm/3)
+      intent(in) dEQM
+      dimension FAOUT(*), ETOUT(*), QPOLEOUT(*)
+      intent(out) FAOUT, ETOUT, QPOLEOUT
 
       include '../commonblks/parameters.cmn'
       include '../commonblks/combaths.cmn'
@@ -120,7 +122,7 @@ cw        write(lunout,*)RALOCAL(1),RALOCAL(2),RALOCAL(3)
 c        print *, indH2O
         if(indH2O) then
           CALL GAGAFE(NATMS, RALOCAL, itagl, FAlocal,
-     +                uTotofim, virTot, ETOUT,eQM,natm)
+     +                uTotofim, virTot, ETOUT,eQM,dEQM, natm, QPOLEOUT)
 cH2O              this gagafe call is strictly only for water code.
         else
 c$$$          CALL GAGAFE(NATMS,RALOCAL,FAlocal,NATMS,RALOCAL,FAlocal,

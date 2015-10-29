@@ -392,6 +392,34 @@ c               dEtdr(j,k,i) = dEhdr(k,j,i)
       end do
       return
       end
+c----------------------------------------------------------------------+
+c     Add the derivative of all the fields  QMMM                       |
+c----------------------------------------------------------------------+
+      subroutine addDfieldsQM(dEhdr, dEddr, dEtdr, dEtdrQM, dEQM, nM)
+
+      implicit none
+      include '../commonblks/parameters.cmn'
+      integer i, j, k, nM
+      real*8 dEhdr(3,3,maxCoo/3)
+      real*8 dEtdr(3,3,maxCoo/3), dEddr(3,3,maxCoo/3)
+      real*8 dEQM(3,3,maxCoo/3), dEtdrQM(3,3,maxCoo/3)
+
+      do i = 1, nM
+         do j = 1, 3
+            do k = 1, 3
+               dEtdrQM(k,j,i) = dEhdr(k,j,i) + dEddr(k,j,i) 
+     $                                       + dEQM(k,j,i)
+c               dEtdr(j,k,i) = dEhdr(k,j,i)
+            end do
+         end do
+         do j = 2, 3
+            do k = 1, j-1
+               dEtdrQM(j,k,i) = dEtdrQM(k,j,i)
+            end do
+         end do
+      end do
+      return
+      end
 c-----------------------------------------------------------------------      
       subroutine applyPBC(r, sep, j)
 

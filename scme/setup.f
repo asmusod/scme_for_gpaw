@@ -7,14 +7,16 @@ c          - CALLS FORCE - WHICH INITIALIZES F ARRAY FOR DYNAMICS
 c          - COMPUTES INITIAL (REFERENCE) VALUES                                          
 c          - CHARACTERIZES THE STARTING CONFIGURATION                                     
 c                                                                                         
-      SUBROUTINE SETUP(eQM,FAOUT,EPOTOUT,ETOUT,natm)
+      SUBROUTINE SETUP(eQM,dEQM,FAOUT,EPOTOUT,ETOUT,natm,QPOLEOUT)
 c                                                                                         
       implicit real*8 (a-h,o-z)
       integer natm
       real*8 eQM(3,natm)
       intent(in) eQM
-      dimension FAOUT(*), ETOUT(*)
-      intent(out) FAOUT, ETOUT
+      real*8 dEQM(3,3,natm)
+      intent(in) dEQM
+      dimension FAOUT(*), ETOUT(*), QPOLEOUT(*)
+      intent(out) FAOUT, ETOUT, QPOLEOUT
       real*8 EPOTOUT
       intent(out) EPOTOUT 
 
@@ -666,7 +668,7 @@ c          make sure a list of interactions is created now.
       
 c      print *,'Calling FORCE'      
                                                                                    
-      CALL FORCE(eQM,FAOUT,ETOUT,natm)
+      CALL FORCE(eQM,dEQM,FAOUT,ETOUT,natm,QPOLEOUT)
       
 CAA Write out the inital forces
       open(421,file='init_forces.dat',status='replace',action='write')
