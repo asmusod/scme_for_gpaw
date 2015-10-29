@@ -1,0 +1,13 @@
+      LOGICAL IVOL
+      PARAMETER (NMAX=6006)
+
+
+      COMMON /F1COM/ XICOM(NMAX),PCOM(NMAX),NCOM,NVARS
+      common /tolers/ FTOL,EPS,TOLLIN,tolforce,MAXIT,maxforit
+      common /volset/ axset,ayset,azset,IVOL
+
+c                 NB:   NCOM is the number of coordinates,                                
+c                       if const pressure, then the number of                             
+c                       variables is Ncom+1 since volume is treated as a var.             
+ 
+ 

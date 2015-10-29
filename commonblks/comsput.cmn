@@ -1,0 +1,15 @@
+cGary                                                                                     
+c this common block is used to send the sputtering arrays to                              
+c  removeatom to be updated when an atom is removed                                       
+
+      COMMON / sput / RAinitial(6006),zsputmin(2002),
+     +                displsput(8008),itmsputmin(2002),
+     +                messsput(2002),
+     +                istpcomp,istpno
+
+c istpcomp is a flag to stop if all of the atoms of a component are                       
+c    removed                                                                              
+c istpno is the old component number that was removed                                     
+
+c Gary - end                                                                              
+

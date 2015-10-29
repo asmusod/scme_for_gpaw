@@ -1,0 +1,327 @@
+      subroutine coreInt(ra, fa, uCore, nM, a, a2)
+
+      implicit none
+      include '../commonblks/parameters.cmn'
+      include '../commonblks/compotent.cmn'
+
+      integer nM, ai(10), kk, jj
+      real*8 t1, t2, df, uCore, r, a(3), a2(3), avg
+      real*8 ra(maxCoo), fa(maxCoo), c1, c2, c3, c4, c5,t11, t12, t13
+      real*8 Amp(maxCoo/3), dAmp(maxCoo/3), rho(maxCoo/3), f, rMax2
+      real*8 Ri1(3), Ri(3), Ri2(3), Rj1(3), Rj(3), Rj2(3)
+      real*8 Ri1j1, Ri2j1, Ri1j2, Ri2j2, Rij
+      real*8 df11, df21, df12, df22
+      real*8 uR_An
+      real*8 R_An, dR_An1, dR_An2
+      real*8 an_1, an_2, an_3, an_4
+      real*8 tt1
+      integer*4 Pt_i, Pt_i1, Pt_i2
+      integer*4 Pt_j, Pt_j1, Pt_j2
+      character*40 envdata
+
+c     Using Stone Dispersion 
+c$$$      parameter (c1 = -3.17312,
+c$$$     $     c2 = 52557.9,
+c$$$     $     c3 = -3.29165)
+
+c     Using switching at short distances.
+C     parameter(c1 = -2.14409d0,
+C    $          c2 = 21773.8477335795*1.02d0,
+C    $          c3 = -3.24106d0, 
+C    $          c4 = c3/1.325d0)
+
+c$$$      parameter (c1 = -3.47051222021582,
+c$$$     $     c2 = 5402.6017951288,
+c$$$     $     c3 = -2.28613610292674,
+c$$$     $     c4 = c3/1.375d0)
+c     $     c5 = 0.015)
+
+      integer i, j, k, n, m, iOn, iOm, iOi, iOj, p
+      real*8 dr(3)
+
+C Read the core repulsion parameters from the environment
+      call getenv('CF_1',envdata)
+      read(envdata,*) c1
+      call getenv('CF_2',envdata)
+      read(envdata,*) c2
+      call getenv('CF_3',envdata)
+      read(envdata,*) c3
+
+C Define the last parameter as in EB's thesis
+      c4 = c3/1.325d0
+
+      call calcRho(rho, ra, nM, a, a2, rMax2)
+
+      call calcAmp(rho, Amp, dAmp, nM)
+      
+c      print '(2f10.2,$)', (rho(1)+rho(5))/2.d0, 
+c     $     (rho(2) + rho(3) + rho(4) + rho(6) + rho(7) + rho(8))/6
+
+c$$$      print *, rho(1)
+c$$$      do n = 1, 5
+c$$$         avg = 0.d0
+c$$$         do i = 12*(n-1)+1+1, 12*n+1
+c$$$            avg = avg + rho(i)
+c$$$         end do
+c$$$         print *, '******', avg/12, ' *****'
+c$$$      end do
+c$$$      stop
+
+c      print *, rho(1)
+c      print *, Amp(1), dAmp(1)
+c      stop
+
+      uCore = 0.d0
+
+      do n = 1, nM-1
+         iOn = 3 * (2*nM + n - 1)
+
+         do m = n+1, nM
+
+            iOm = 3 * (2*nM + m - 1)
+
+            do i = 1, 3
+               dr(i) = ra(iOm+i) - ra(iOn+i)
+               if (dr(i) .gt. a2(i)) then
+                  dr(i) = dr(i) - a(i)
+
+               else if (dr(i) .lt. -a2(i)) then
+                  dr(i) = dr(i) + a(i)
+               end if
+            end do
+
+            r = sqrt(dr(1)**2 + dr(2)**2 + dr(3)**2)
+
+            t11 = exp(c3*r)
+            t12 = exp(c4*r)
+            t13 = r**c1
+
+c            c5 = (Amp(n)+Amp(m)) * potpar(1,1)
+            c5 = (Amp(n)+Amp(m))
+
+c           c5 = potpar(1,1)
+
+            t1 = c2 * t13 * (t11 + c5 * t12)
+c            t2 = c2 * t13 * t12 * potpar(1,1)
+            t2 = c2 * t13 * t12
+
+            df = (c1 * t1 / r + 
+     $           c2 * t13 * (c3 * t11 + c5 * c4 * t12)
+     $           ) / r
+
+            uCore = uCore + t1
+
+            do i = 1, 3
+               fa(iOn+i) = fa(iOn+i) + df * dr(i)
+               fa(iOm+i) = fa(iOm+i) - df * dr(i)
+            end do
+
+c            if (.false.) then
+c            if (.true.) then
+c------------------------
+c     Derivative of the embedding part (Amplitude)
+c
+            do j = 1, nM
+               if (j .eq. n) goto 11
+               iOj = 3 * (2*nM + j - 1)
+
+               do k = 1, 3
+                  dr(k) = ra(iOj+k) - ra(iOn+k)
+                  if (dr(k) .gt. a2(k)) then
+                     dr(k) = dr(k) - a(k)
+                  else if (dr(k) .lt. -a2(k)) then
+                     dr(k) = dr(k) + a(k)
+                  end if
+               end do
+
+               r = sqrt(dr(1)**2 + dr(2)**2 + dr(3)**2)
+               
+               call dDens(r, f)
+                  
+               df = dAmp(n) * f * t2 / r
+               do k = 1, 3
+                  fa(iOn+k) = fa(iOn+k) + df * dr(k)
+                  fa(iOj+k) = fa(iOj+k) - df * dr(k)
+               end do
+ 11         end do
+
+            do j = 1, nM
+               if (j .eq. m) goto 12
+               iOj = 3 * (2*nM + j - 1)
+               
+               do k = 1, 3
+                  dr(k) = ra(iOj+k) - ra(iOm+k)
+                  if (dr(k) .gt. a2(k)) then
+                     dr(k) = dr(k) - a(k)
+                  else if (dr(k) .lt. -a2(k)) then
+                     dr(k) = dr(k) + a(k)
+                  end if
+               end do
+
+               r = sqrt(dr(1)**2 + dr(2)**2 + dr(3)**2)
+               call dDens(r, f)
+                  
+               df = dAmp(m) * f * t2 / r
+               do k = 1, 3
+                  fa(iOm+k) = fa(iOm+k) + df * dr(k)
+                  fa(iOj+k) = fa(iOj+k) - df * dr(k)
+               end do
+ 12         end do
+c---------------------------
+c            end if
+
+         end do
+      end do
+
+C Read the core anisotropy parameters from the environment
+      call getenv('AN_1',envdata)
+      read(envdata,*) an_1
+      call getenv('AN_2',envdata)
+      read(envdata,*) an_2
+      call getenv('AN_3',envdata)
+      read(envdata,*) an_3
+      call getenv('AN_4',envdata)
+      read(envdata,*) an_4
+
+C Adding the missing anisotropic exchange repulsion term
+
+      uR_An = 0.0D0
+
+      do i=1,nM-1
+
+C Get the coordinates for molecule i
+        Pt_i1 = 6*(i-1)
+        Pt_i  = 3*(i-1+2*nM)
+        Pt_i2 = 3+6*(i-1)
+
+        do p=1,3
+          Ri1(p) = ra(Pt_i1 + p)
+          Ri(p)  = ra(Pt_i  + p)
+          Ri2(p) = ra(Pt_i2 + p)
+        end do
+
+        do j=i+1,nM
+
+C Get the coordinates for molecule j
+          Pt_j1 = 6*(j-1)
+          Pt_j  = 3*(j-1+2*nM)
+          Pt_j2 = 3+6*(j-1)
+
+          do p=1,3
+            Rj1(p) = ra(Pt_j1 + p)
+            Rj(p)  = ra(Pt_j  + p)
+            Rj2(p) = ra(Pt_j2 + p)
+          end do
+
+C Calculate the distances
+          Ri1j1 = 0.0D0
+          Ri2j1 = 0.0D0
+          Ri1j2 = 0.0D0
+          Ri2j2 = 0.0D0
+          Rij   = 0.0D0
+
+          do p=1,3
+            Ri1j1 = Ri1j1 + ( Ri1(p) - Rj1(p)  )**2
+            Ri2j1 = Ri2j1 + ( Ri2(p) - Rj1(p)  )**2
+            Ri1j2 = Ri1j2 + ( Ri1(p) - Rj2(p)  )**2
+            Ri2j2 = Ri2j2 + ( Ri2(p) - Rj2(p)  )**2
+            Rij   = Rij   + ( Ri(p)  - Rj(p)   )**2
+          end do
+
+          Ri1j1 = dsqrt(Ri1j1)
+          Ri2j1 = dsqrt(Ri2j1)
+          Ri1j2 = dsqrt(Ri1j2)
+          Ri2j2 = dsqrt(Ri2j2)
+          Rij   = dsqrt(Rij)
+
+C Calculate the energy contributions
+
+          uR_An = uR_An + R_An(an_1,an_2,an_3,an_4,Ri1j1,Rij) +
+     &                    R_An(an_1,an_2,an_3,an_4,Ri2j1,Rij) +
+     &                    R_An(an_1,an_2,an_3,an_4,Ri1j2,Rij) +
+     &                    R_An(an_1,an_2,an_3,an_4,Ri2j2,Rij)
+
+C Calculate the derivatives
+
+C With respect to the O positions:
+          
+          tt1 = ( dR_An2(an_1,an_2,an_3,an_4,Ri1j1,Rij) +
+     &            dR_An2(an_1,an_2,an_3,an_4,Ri2j1,Rij) +
+     &            dR_An2(an_1,an_2,an_3,an_4,Ri1j2,Rij) +
+     &            dR_An2(an_1,an_2,an_3,an_4,Ri2j2,Rij)   ) / Rij
+
+          do p=1,3
+            fa(Pt_i + p) = fa(Pt_i + p) - (Ri(p)-Rj(p))*tt1
+            fa(Pt_j + p) = fa(Pt_j + p) + (Ri(p)-Rj(p))*tt1
+          end do
+
+C With respect to the H positions:
+
+          df11 = dR_An1(an_1,an_2,an_3,an_4,Ri1j1,Rij)/Ri1j1
+          df21 = dR_An1(an_1,an_2,an_3,an_4,Ri2j1,Rij)/Ri2j1
+          df12 = dR_An1(an_1,an_2,an_3,an_4,Ri1j2,Rij)/Ri1j2
+          df22 = dR_An1(an_1,an_2,an_3,an_4,Ri2j2,Rij)/Ri2j2
+
+          do p=1,3
+            fa(Pt_i1 + p) = fa(Pt_i1 + p) -
+     &                   (Ri1(p)-Rj1(p))*df11 - (Ri1(p)-Rj2(p))*df12
+            fa(Pt_i2 + p) = fa(Pt_i2 + p) -
+     &                   (Ri2(p)-Rj1(p))*df21 - (Ri2(p)-Rj2(p))*df22
+            fa(Pt_j1 + p) = fa(Pt_j1 + p) +
+     &                   (Ri1(p)-Rj1(p))*df11 + (Ri2(p)-Rj1(p))*df21
+            fa(Pt_j2 + p) = fa(Pt_j2 + p) +
+     &                   (Ri1(p)-Rj2(p))*df12 + (Ri2(p)-Rj2(p))*df22
+          end do
+
+C Debug
+C     write(10,FMT='(F16.10)') uR_An
+C     write(10,FMT='(F16.10)') 
+C    &           (Ri1(1)-Rj1(1))*df11 + (Ri1(1)-Rj2(1))*df12
+C     write(10,FMT='(F16.10)') 
+C    &           (Ri2(1)-Rj1(1))*df21 + (Ri2(1)-Rj2(1))*df22
+C     write(10,FMT='(F16.10)') 
+C    &         - (Ri1(1)-Rj1(1))*df11 - (Ri2(1)-Rj1(1))*df21
+C     write(10,FMT='(F16.10)') 
+C    &         - (Ri1(1)-Rj2(1))*df12 - (Ri2(1)-Rj2(1))*df22
+        end do
+      end do
+
+      uCore = uCore + uR_An
+
+      return
+      end
+
+C***************************************************************************
+
+      real*8 function R_An(c1,c2,c3,c4,r1,r2)
+
+      real*8 c1, c2, c3, c4
+      real*8 r1, r2
+
+      R_An = (c1 + c2*(r1-r2) + c3*(r1-r2)**2 ) * dexp(-c4*r2)
+
+      end
+
+C***************************************************************************
+
+      real*8 function dR_An1(c1,c2,c3,c4,r1,r2)
+
+      real*8 c1, c2, c3, c4
+      real*8 r1, r2
+
+      dR_An1 = ( c2 + 2.0D0*c3*(r1-r2) ) * dexp(-c4*r2)
+
+      end
+
+C***************************************************************************
+
+      real*8 function dR_An2(c1,c2,c3,c4,r1,r2)
+
+      real*8 c1, c2, c3, c4
+      real*8 r1, r2
+
+      dR_An2 = ( -c1*c4 - c2 - (c2*c4+2.0D0*c3)*(r1-r2) -
+     &            c3*c4*(r1-r2)**2 ) * dexp(-c4*r2)
+
+      end
+

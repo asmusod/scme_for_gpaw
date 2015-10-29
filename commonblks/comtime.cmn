@@ -1,0 +1,6 @@
+      integer ntotstps
+      real*8 time0,time,STPSZ,SSCRH(10)
+
+c      common /time/ time0,time,STPSZ,SSCRH(10),ntotstps
+      common /time/ time0,time,STPSZ,SSCRH,ntotstps
+

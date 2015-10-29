@@ -1,0 +1,8 @@
+c  Comdeposit.cmn
+c    commonblock for info on sequential deposition:
+
+      LOGICAL Ideposit
+
+      common / comdeposit / dz0vd,v0vd,
+     +            afract,naftvd,nbtwmc,nbfnex,ntotvd,ttotvd,ztcontrl,
+     +                Ideposit

@@ -1,0 +1,146 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module scme ! in 
+    interface  ! in :scme
+        subroutine main(natm,asecoords,asebox,faout,epotout,etout) ! in :scme:main.f
+            integer optional,intent(in),check((len(asecoords))/(3)>=natm),depend(asecoords) :: natm=(len(asecoords))/(3)
+            real*8 dimension(3 * natm),intent(in) :: asecoords
+            real*8 dimension(3),intent(in) :: asebox
+            real(kind=8) dimension(3 * natm),intent(out),depend(natm) :: faout
+            real*8 intent(out) :: epotout
+            real*8 dimension(3,natm/3),intent(out),depend(natm) :: etout
+            integer dimension(15000) :: itag
+            integer :: natoms
+            integer :: natype
+            integer dimension(10) :: natms
+            real*8 dimension(45000) :: va
+            real*8 dimension(45000) :: fa
+            real*8 :: volv
+            real*8 dimension(15000) :: potpat
+            real*8 dimension(500) :: fuperpt2
+            real*8 dimension(500) :: fat2
+            real*8 dimension(45000) :: ra
+            real*8 :: pmass
+            real*8 :: volm
+            real*8 dimension(10) :: amass
+            real*8 dimension(45000) :: avera
+            real*8 dimension(45000) :: sumra
+            real*8 dimension(45000) :: ranopbc
+            character dimension(10,80,1),intent(c) :: cphead
+            integer dimension(45000) :: ilangevin
+            integer :: nlangevin
+            logical :: incol
+            logical :: imasv
+            logical :: irate
+            integer :: nmasv
+            real*8 :: textl
+            logical :: ipres
+            logical :: ipcol
+            logical :: ilinch
+            logical :: iqkmin
+            logical :: ispf
+            integer :: indpara
+            real*8 :: crate
+            real*8 :: temmas
+            real*8 :: pextl
+            real*8 :: volapp
+            real*8 :: plambd
+            real*8 :: ratlinch
+            real*8 :: colrat
+            logical :: irigidmolecules
+            logical :: inudge
+            real*8 :: cosphismall
+            real*8 :: cosphilarge
+            real*8 :: tolforce
+            logical :: iqkmconv
+            real*8 dimension(10) :: sprconfpi
+            real*8 dimension(1200) :: enerfpi
+            real*8 dimension(1200) :: cntrfa
+            integer :: nfpi
+            integer :: nfpistr
+            integer :: nfpicir
+            integer :: nfpicnt
+            integer dimension(10) :: nfpicom
+            integer dimension(1200) :: itagfpi
+            integer :: numimage
+            integer dimension(1200) :: ifpi
+            integer dimension(1200) :: nimfpi
+            integer dimension(1200) :: numfpi
+            integer :: naconstr
+            integer dimension(15000) :: iconstr
+            integer :: indallinchains
+            integer :: indallfixend
+            integer :: ifirsttag
+            real*8 dimension(45000) :: harmcntr
+            real*8 dimension(15000) :: harmspr
+            integer :: nharm
+            integer dimension(15000) :: iharm
+            real*8 :: ax
+            real*8 :: ay
+            real*8 :: az
+            real*8 :: ax0
+            real*8 :: ay0
+            real*8 :: az0
+            real*8 :: alpha
+            real*8 :: beta
+            real*8 :: gamma
+            real*8 :: sinalp
+            real*8 :: cosalp
+            real*8 :: sinbet
+            real*8 :: cosbet
+            real*8 :: singam
+            real*8 :: cosgam
+            real*8 :: zsurf
+            real*8 :: zbott
+            real*8 :: indzbott
+            real*8 :: indzsurf
+            real*8 :: time0
+            real*8 :: time
+            real*8 :: stpsz
+            real*8 dimension(10) :: sscrh
+            integer :: ntotstps
+            real*8 dimension(45000) :: constraint
+            real*8 :: sprconst
+            real*8 :: bconst
+            logical :: genconstraints
+            real*8 dimension(45000) :: rinfraperm
+            integer :: ninfraperm
+            integer :: nainfraperm
+            integer :: naperm
+            integer dimension(15000) :: iperm
+            integer dimension(15000) :: itinfraperm
+            integer :: lunout
+            integer :: luninp
+            integer :: lunci
+            integer :: lunco
+            integer :: luncm
+            integer :: lunpot
+            integer :: lunins
+            integer :: luntgr
+            integer :: lunaco
+            integer :: lunvis
+            integer :: lunattr
+            integer :: luncofpi
+            integer :: lunoutfpi
+            integer :: lunqckmin
+            integer :: lunmaxim
+            common /conf3/ itag,natoms,natype,natms
+            common /conf2/ va,fa,volv,potpat,fuperpt2,fat2
+            common /conf1/ ra,pmass,volm,amass,avera,sumra,ranopbc
+            common /conf4/ cphead
+            common /langevin/ ilangevin,nlangevin
+            common /baths/ incol,imasv,irate,nmasv,textl,ipres,ipcol,ilinch,iqkmin,ispf,indpara,crate,temmas,pextl,volapp,plambd,ratlinch,colrat,irigidmolecules,inudge,cosphismall,cosphilarge,tolforce,iqkmconv
+            common /fpi/ sprconfpi,enerfpi,cntrfa,nfpi,nfpistr,nfpicir,nfpicnt,nfpicom,itagfpi,numimage,ifpi,nimfpi,numfpi,naconstr,iconstr,indallinchains,indallfixend,ifirsttag
+            common /harmcntr/ harmcntr,harmspr,nharm,iharm
+            common /geom/ ax,ay,az,ax0,ay0,az0,alpha,beta,gamma,sinalp,cosalp,sinbet,cosbet,singam,cosgam,zsurf,zbott,indzbott,indzsurf
+            common /time/ time0,time,stpsz,sscrh,ntotstps
+            common /constraints/ constraint,sprconst,bconst,genconstraints
+            common /permafrost/ rinfraperm,ninfraperm,nainfraperm,naperm,iperm,itinfraperm
+            common /lunits/ lunout,luninp,lunci,lunco,luncm,lunpot,lunins,luntgr,lunaco,lunvis,lunattr,luncofpi,lunoutfpi,lunqckmin,lunmaxim
+        end subroutine main
+    end interface 
+end python module scme
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

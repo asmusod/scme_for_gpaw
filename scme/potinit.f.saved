@@ -1,0 +1,20 @@
+C AA 23-05-2004
+C Read in parameters for the potential
+
+      SUBROUTINE potinit()
+        IMPLICIT NONE
+        INTEGER i
+        CHARACTER(LEN=80) text
+
+        INCLUDE '../commonblks/potparam.cmn'
+           
+        OPEN(421,FILE='param.pot',STATUS='old',ACTION='read')
+        READ(421,*) (fsti(i),text , i=1,nl)        
+        CLOSE(421)
+
+CAA        do i=1,nl
+CAA          write(*,*) fsti(i)  
+CAA        end do
+CAA        pause
+
+      END 

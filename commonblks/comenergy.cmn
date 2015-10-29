@@ -1,0 +1,9 @@
+c  comenergy:
+
+c$$$      COMMON /ENERGY/ TTOT,TT(6,10),UTOT,UT(55),VIRTOT,virial(55),
+c$$$     +                VIRMAT(6,55),virVEC
+
+      COMMON /ENERGY/ TTOT,T(500),UTOT,utotim(500),VIRTOT,virial(55),
+     +                VIRMAT(6,55),virVEC
+
+      COMMON /BIAS/ biaslevel, nrise

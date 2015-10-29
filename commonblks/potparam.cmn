@@ -1,0 +1,8 @@
+CAA 24-05-2004
+C Handle the potential parameters that used to be in evironmental variables
+
+       INTEGER nl
+       PARAMETER (nl=14)
+       REAL*8 fsti(nl)
+
+       COMMON /potparam/ fsti

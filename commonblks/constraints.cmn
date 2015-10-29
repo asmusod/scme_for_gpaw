@@ -1,0 +1,8 @@
+c  constraints.cmn
+c
+c  This common block carries information on the generalized constraints
+c  option.
+c
+      LOGICAL genConstraints
+      COMMON /constraints/ constraint(MAXCOO), sprConst, bConst, 
+     $     genConstraints

@@ -1,0 +1,154 @@
+gfortran -O3 -fPIC  -c main.f
+gfortran -O3 -fPIC  -c massivecoll.f
+../commonblks/comconf.cmn:11.27:
+    Included at massivecoll.f:10:
+
+     +               aveRA(MAXCOO),sumRA(MAXCOO),raNoPBC(MAXCOO)        
+                           1
+Error: Variable 'maxcoo' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:11.27:
+    Included at massivecoll.f:10:
+
+     +               aveRA(MAXCOO),sumRA(MAXCOO),raNoPBC(MAXCOO)        
+                           1
+Error: Variable 'maxcoo' at (1) in this context must be constant
+../commonblks/comconf.cmn:14.35:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF2/ VA(MAXCOO),FA(MAXCOO),volv,Potpat(MAXATOMS),       
+                                   1
+Error: Variable 'maxcoo' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:14.35:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF2/ VA(MAXCOO),FA(MAXCOO),volv,Potpat(MAXATOMS),       
+                                   1
+Error: Variable 'maxcoo' at (1) in this context must be constant
+../commonblks/comconf.cmn:24.33:
+    Included at massivecoll.f:10:
+
+      COMMON /harmcntr/ harmcntr(MAXCOO),harmspr(MAXATOMS),             
+                                 1
+Error: Variable 'maxcoo' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:24.33:
+    Included at massivecoll.f:10:
+
+      COMMON /harmcntr/ harmcntr(MAXCOO),harmspr(MAXATOMS),             
+                                 1
+Error: Variable 'maxcoo' at (1) in this context must be constant
+../commonblks/comconf.cmn:24.49:
+    Included at massivecoll.f:10:
+
+      COMMON /harmcntr/ harmcntr(MAXCOO),harmspr(MAXATOMS),             
+                                                 1
+Error: Variable 'maxatoms' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:24.49:
+    Included at massivecoll.f:10:
+
+      COMMON /harmcntr/ harmcntr(MAXCOO),harmspr(MAXATOMS),             
+                                                 1
+Error: Variable 'maxatoms' at (1) in this context must be constant
+../commonblks/comconf.cmn:31.38:
+    Included at massivecoll.f:10:
+
+     +               naconstr,iconstr(MAXATOMS),                        
+                                      1
+Error: Variable 'maxatoms' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:31.38:
+    Included at massivecoll.f:10:
+
+     +               naconstr,iconstr(MAXATOMS),                        
+                                      1
+Error: Variable 'maxatoms' at (1) in this context must be constant
+../commonblks/comconf.cmn:25.36:
+    Included at massivecoll.f:10:
+
+     +                  nharm,iharm(MAXATOMS)                           
+                                    1
+Error: Variable 'maxatoms' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:25.36:
+    Included at massivecoll.f:10:
+
+     +                  nharm,iharm(MAXATOMS)                           
+                                    1
+Error: Variable 'maxatoms' at (1) in this context must be constant
+../commonblks/comconf.cmn:62.34:
+    Included at massivecoll.f:10:
+
+      COMMON /langevin/ ilangevin(MAXCOO),                              
+                                  1
+Error: Variable 'maxcoo' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:62.34:
+    Included at massivecoll.f:10:
+
+      COMMON /langevin/ ilangevin(MAXCOO),                              
+                                  1
+Error: Variable 'maxcoo' at (1) in this context must be constant
+../commonblks/comconf.cmn:21.35:
+    Included at massivecoll.f:10:
+
+     +                naperm,iperm(MAXATOMS),itinfraperm(MAXATOMS)      
+                                   1
+Error: Variable 'maxatoms' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:21.35:
+    Included at massivecoll.f:10:
+
+     +                naperm,iperm(MAXATOMS),itinfraperm(MAXATOMS)      
+                                   1
+Error: Variable 'maxatoms' at (1) in this context must be constant
+../commonblks/comconf.cmn:17.26:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF3/ itag(MAXATOMS),NATOMS,NATYPE,NATMS(MAXCOMP)        
+                          1
+Error: Variable 'maxatoms' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:17.26:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF3/ itag(MAXATOMS),NATOMS,NATYPE,NATMS(MAXCOMP)        
+                          1
+Error: Variable 'maxatoms' at (1) in this context must be constant
+../commonblks/comconf.cmn:21.57:
+    Included at massivecoll.f:10:
+
+     +                naperm,iperm(MAXATOMS),itinfraperm(MAXATOMS)      
+                                                         1
+Error: Variable 'maxatoms' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:21.57:
+    Included at massivecoll.f:10:
+
+     +                naperm,iperm(MAXATOMS),itinfraperm(MAXATOMS)      
+                                                         1
+Error: Variable 'maxatoms' at (1) in this context must be constant
+../commonblks/comconf.cmn:14.55:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF2/ VA(MAXCOO),FA(MAXCOO),volv,Potpat(MAXATOMS),       
+                                                       1
+Error: Variable 'maxatoms' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:14.55:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF2/ VA(MAXCOO),FA(MAXCOO),volv,Potpat(MAXATOMS),       
+                                                       1
+Error: Variable 'maxatoms' at (1) in this context must be constant
+../commonblks/comconf.cmn:10.24:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF1/ RA(MAXCOO),pmass,volm,AMASS(MAXCOMP),              
+                        1
+Error: Variable 'maxcoo' cannot appear in the expression at (1)
+../commonblks/comconf.cmn:10.24:
+    Included at massivecoll.f:10:
+
+      COMMON /CONF1/ RA(MAXCOO),pmass,volm,AMASS(MAXCOMP),              
+                        1
+Error: Variable 'maxcoo' at (1) in this context must be constant
+../commonblks/comconf.cmn:11.57:
+    Included at massivecoll.f:10:
+
+     +               aveRA(MAXCOO),sumRA(MAXCOO),raNoPBC(MAXCOO)        
+                                                         1
+Error: Variable 'maxcoo' cannot appear in the expression at (1)
+Fatal Error: Error count reached limit of 25.
+make: *** [massivecoll.o] Error 1

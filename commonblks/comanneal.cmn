@@ -1,0 +1,37 @@
+c  This common block must come after compotent.cmn                                        
+
+       parameter (maxOps = 50)
+       parameter (maxadjpar = 20)
+       parameter (maxptsfrho = 250)
+       parameter (maxpolyord = 10)
+       parameter (maxdimpts = 100)
+
+
+       LOGICAL indprop,indwrfini,indprint
+
+       character header, obsheader, parheader, runheader
+
+       common /headers/ header(80),obsheader(80),parheader(80),
+     +                  runheader(80)
+
+       common /embeddata/ azero,ecoh,Bulkmod,alatminfr,alatmaxfr,
+     +            dimerenergy(maxdimpts),dimerdist(maxdimpts),
+     +            nfptscrystal,nfptsdimer
+       common /embedfn/ frho(maxptsfrho),rhoi(maxptsfrho),
+     +                  numptsdim,numptscry
+       common /adjustparams/ delpar(maxadjpar,maxadjpar),
+     +              indparfit(maxadjpar),indpotfit(maxadjpar),numadjpar
+       common /lunits/ lunout,luninpobs,lunci,luninppar,lunoutpar
+       common /annpar/ numstps,TEMP,NINAVG,n1seed
+       common /lflags/ idimer
+       common /minvals/ fitmin(20),drmin,dEmin,c11min,c12min,c44min
+       common /tol/ tolecoh,tolevac
+       common /amoebadata/ FTOLAM,ITAMBA
+       common /datatofit/ props(maxOps,10),noperat,
+     +         ndatacomp(maxOps),indprop(maxOps),indwrfini,indprint
+
+c        up to 50 different operations (e.g. elastic constants)                           
+c        can be fitted with up to 10 numbers (e.g. C11, C12, C44)                         
+c        associated with each operation.                                                  
+ 
+ 

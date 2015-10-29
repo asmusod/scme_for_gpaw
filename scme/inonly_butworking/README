@@ -1,0 +1,6 @@
+README file for SCME program mmfv.exc 	(KT Wikfeldt, wikfeldt@physto.se)
+------------------------------------------------------------------------
+
+
+conin.f		reads the configuration file
+fort.98		RATTLE parameters written out at end of run, why?

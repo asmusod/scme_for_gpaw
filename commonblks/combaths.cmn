@@ -1,0 +1,13 @@
+      LOGICAL INCOL,ITEMP,IMASV,IRATE,IPRES,IPCOL,ILINCH,IQKMIN,INUDGE,
+     +        Iqkmconv
+      LOGICAL ISPF, IrigidMolecules
+
+      COMMON / baths / INCOL,IMASV,IRATE,NMASV,TEXTL,
+     +                 IPRES,IPCOL,ILINCH,IQKMIN,ISPF,indpara,
+     +                 CRATE,temmas,pextl,volapp,plambd,ratlinch,colrat,
+     +                 IrigidMolecules,
+c        new in version f:
+     +                 INUDGE,cosPhismall,cosPhilarge,tolforce,Iqkmconv
+
+
+ 

@@ -1,0 +1,4 @@
+      common / tempgr / tgrlx,tgrly,tgrlz,tgrid(21,21,21),
+     +                  ngrlx,ngrly,ngrlz,natgr(21,21,21)
+
+ 

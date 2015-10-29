@@ -1,0 +1,41 @@
+
+	integer MAXATOMS, MAXCOO, MAXFPI, MAXFPICOO, MAXCOMP
+	integer MAXNUPTDL, MAXTGR, MAXPRS, MAXPRSCOO, MAXPOTCH
+
+c   Parameters for md3dEAM program:
+
+c   from comconf:
+c      parameter (MAXATOMS = 10002)
+      parameter (MAXATOMS = 15000)
+cERB      parameter (MAXATOMS = 5800)
+cERB      parameter (MAXATOMS = 4000)
+c                      maximum # of atoms.                                                
+      parameter (MAXCOO = 3*MAXATOMS)
+c                      3*(max # of atoms).                                                
+cERB      parameter (MAXFPI = 600)
+cAllinChain:
+      parameter (MAXFPI = 1200)
+c                      Maximum tag of a Feyman Path Integral (tags 100-599).                 
+      parameter (MAXFPICOO = 3*MAXFPI)
+
+      parameter (MAXCOMP = 10)
+
+
+c  maximum number of updates of neighborlist:
+      parameter (MAXNUPTDL = 10000)
+cERB      parameter (MAXNUPTDL = 2)
+c              this dimension is for array on comintlis.cmn in mdloop
+
+c  Maximum number of nodes in the temperature grid: 
+      parameter (MAXTGR = 21)
+cERB      parameter (MAXTGR = 1)
+
+c  For neighborlist:
+      parameter (MAXPRS = 150000)
+cERB      parameter (MAXPRS = 2)
+      parameter (MAXPRSCOO = 3*MAXPRS)
+
+c  For checking potential in setup: 
+      parameter (MAXPOTCH = 50)
+
+

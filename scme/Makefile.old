@@ -1,0 +1,110 @@
+OBJS = main.o massivecoll.o mdloopRattle.o randomnumber.o FPIforce.o conin.o \
+       conout.o erf.o erfinv.o kineticenergy.o randomvelocity.o readinput.o \
+       rigidatoms.o centroidconstr.o secondIBM.o setup.o 2doperation.o \
+       addatom.o removeatom.o quickmin.o nudgedH2O.o forcesAllch1call.o \
+       fofrhozero.o dfrhozero.o shaker1.o shaker2.o ludcmp.o tangentialVel.o \
+       moleKineticEnergy.o velout.o projectForce.o gaga.o \
+       calcEhigh.o calcEdip_quad.o readPoles.o readPolariz.o \
+       inducePoles.o calcDField.o calcDdField.o calcDqField.o calcDoField.o \
+       calcDhField.o forceCM.o torqueCM.o atomicForces2.o molForce2.o \
+       mdUtil2.o\
+       calcEnergy.o molecProperties.o dispersion.o coreInt2.o rho1.5.o\
+       tang_toennies.o
+
+F77 = gfortran
+#FLGS= -O4 -lmass
+#FLGS= -O3 -lmass -qarch=auto -qtune=auto -qipa=partition=large -qcache=auto -static
+FLGS= -O3 -static
+#FLGS= -g 
+
+mmfv.exc: $(OBJS)
+	$(F77) -o $@ $(FLGS) $(OBJS)
+
+.f.o:
+	$(F77) $(FLGS) -c $<
+
+clean:
+	rm *.o
+
+
+#-----------------------------------------------------------------------
+CD = ../commonblks/
+
+2doperation.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+               $(CD)comtime.cmn $(CD)comluns.cmn
+FPIforce.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn \
+            $(CD)comenergy.cmn
+addatom.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn \
+           $(CD)comtime.cmn $(CD)comluns.cmn $(CD)comintlis.cmn
+centroidconstr.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+                  $(CD)comtime.cmn $(CD)comluns.cmn
+conin.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+         $(CD)comtime.cmn $(CD)combaths.cmn $(CD)comluns.cmn
+conout.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+         $(CD)combaths.cmn $(CD)comtime.cmn $(CD)comluns.cmn \
+         $(CD)comoutcntrl.cmn
+dfrhozero.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)compotent.cmn
+fofrhozero.o: $(CD)parameters.cmn $(CD)compotent.cmn
+forcesAllch1call.o: $(CD)parameters.cmn $(CD)combaths.cmn $(CD)comgeom.cmn \
+                    $(CD)comconf.cmn $(CD)comenergy.cmn $(CD)comenperat.cmn \
+                    $(CD)comluns.cmn
+gagafeMolSF.o: $(CD)parameters.cmn $(CD)compotent.cmn $(CD)comtime.cmn \
+               $(CD)comgeom.cmn $(CD)parameters.cmn $(CD)comconf.cmn \
+               $(CD)parameters.cmn $(CD)comconf.cmn $(CD)parameters.cmn \
+               $(CD)comconf.cmn $(CD)parameters.cmn $(CD)comconf.cmn \
+               $(CD)parameters.cmn $(CD)comgeom.cmn
+kineticenergy.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn \
+                 $(CD)comtgr.cmn $(CD)comtime.cmn $(CD)comenergy.cmn \
+                 $(CD)comoutcntrl.cmn $(CD)comluns.cmn
+main.o: $(CD)comluns.cmn
+massivecoll.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+               $(CD)comtime.cmn $(CD)comenergy.cmn $(CD)comluns.cmn \
+               $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+               $(CD)comtime.cmn $(CD)comenergy.cmn $(CD)comluns.cmn
+mdloopRattle.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn \
+                $(CD)comtime.cmn $(CD)combaths.cmn $(CD)comoutcntrl.cmn \
+                $(CD)comtgr.cmn $(CD)compotent.cmn $(CD)comenergy.cmn \
+                $(CD)comluns.cmn $(CD)comenperat.cmn $(CD)comdeposit.cmn \
+                $(CD)comintlis.cmn $(CD)constraints.cmn
+nudgedH2O.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn \
+             $(CD)comenergy.cmn $(CD)comluns.cmn $(CD)comoutcntrl.cmn \
+             $(CD)combaths.cmn
+projectForce.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn \
+                $(CD)constraints.cmn $(CD)parameters.cmn $(CD)comconf.cmn \
+                $(CD)comgeom.cmn $(CD)constraints.cmn
+quickmin.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+            $(CD)comtime.cmn $(CD)combaths.cmn $(CD)comluns.cmn \
+            $(CD)comoutcntrl.cmn
+readinput.o: $(CD)parameters.cmn $(CD)comoutcntrl.cmn $(CD)combaths.cmn \
+             $(CD)comtgr.cmn $(CD)comtime.cmn $(CD)comgeom.cmn \
+             $(CD)comconf.cmn $(CD)compotent.cmn $(CD)comdeposit.cmn \
+             $(CD)comluns.cmn $(CD)comintlis.cmn $(CD)constraints.cmn
+removeatom.o: $(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn \
+              $(CD)comtime.cmn $(CD)comluns.cmn $(CD)comintlis.cmn
+rigidatoms.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+              $(CD)comtime.cmn $(CD)comluns.cmn
+setup.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+         $(CD)comtime.cmn $(CD)comtgr.cmn $(CD)combaths.cmn \
+         $(CD)comoutcntrl.cmn $(CD)comenergy.cmn $(CD)compotent.cmn \
+         $(CD)comluns.cmn $(CD)comdeposit.cmn $(CD)comintlis.cmn \
+         $(CD)constraints.cmn
+shaker1.o: $(CD)parameters.cmn $(CD)comtime.cmn $(CD)comconf.cmn \
+           $(CD)comenergy.cmn $(CD)compotent.cmn $(CD)comgeom.cmn \
+           $(CD)parameters.cmn $(CD)comgeom.cmn    
+shaker2.o: $(CD)parameters.cmn $(CD)comtime.cmn $(CD)comconf.cmn
+tangentialVel.o:$(CD)parameters.cmn $(CD)comconf.cmn $(CD)comgeom.cmn    
+velout.o: $(CD)parameters.cmn $(CD)comgeom.cmn $(CD)comconf.cmn \
+          $(CD)combaths.cmn $(CD)comtime.cmn $(CD)comluns.cmn \
+          $(CD)comoutcntrl.cmn
+calcDField.o: $(CD)parameters.cmn
+calcDdField.o: $(CD)parameters.cmn
+calcDqField.o: $(CD)parameters.cmn
+calcDoField.o: $(CD)parameters.cmn
+calcDhField.o: $(CD)parameters.cmn
+forceCM.o:     $(CD)parameters.cmn
+torqueCM.o:    $(CD)parameters.cmn
+atomicForces.o: $(CD)parameters.cmn
+calcEnergy.o:  $(CD)parameters.cmn
+molecProperties.o: $(CD)comgeom.cmn $(CD)parameters.cmn
+dispersion.o: $(CD)parameters.cmn
+coreInt.o: $(CD)parameters.cmn

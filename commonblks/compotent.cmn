@@ -1,0 +1,29 @@
+c  compotent:
+
+      integer MAXPOTPAR
+      parameter (MAXPOTPAR = 100)   !max # of parameters for each int.
+      integer maxneb,maxnpr,npotpar,iorderf,indf1
+
+      real*8 potpar(MAXPOTPAR,3), rskinmax, rskin(3),rskin2(3)
+      real*8 skndpt(3),RCUT(3),RCUT2(3),rhocut1st(10),rhocut2st(10)
+      real*8 phicutst(10)
+
+      character*1 potheader
+
+      COMMON / POTENT /
+     +                  potpar,
+     +                  rskinmax,
+     +                  rskin,rskin2,skndpt,RCUT,RCUT2,
+     +                  rhocut1st,rhocut2st,phicutst,
+     +                  maxneb,maxnpr,npotpar,iorderf,indf1
+
+c      COMMON / POTENT /
+c     +                  potpar(MAXPOTPAR,3),
+c     +                  rskinmax,
+c     +                  rskin(3),rskin2(3),skndpt(3),RCUT(3),RCUT2(3),
+c     +                  rhocut1st(10),rhocut2st(10),phicutst(10),
+c     +                  maxneb,maxnpr,npotpar,iorderf,indf1
+
+cERB  Common block added for TIP5P where the charges vary as well as the 
+cERB  position of the N charge (k).
+cERB      common / charges / charge2(maxCoo), dispN(maxCoo/3)

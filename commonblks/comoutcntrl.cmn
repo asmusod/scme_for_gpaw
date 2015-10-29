@@ -1,0 +1,6 @@
+      LOGICAL IGRP,IRMS,IDUMP,INSTA,IAVECOO,ITEMPGR,IVISC,Iattraj
+      COMMON /outcntrl/ IRMS,NGRP,
+     +                  IDUMP,NDUMP,NWAIT,indvel,zminwr,
+     +                  INSTA,NINST,IAVECOO,nstaveRA,ITEMPGR,
+     +                  IVISC,NVISC,NWVISC,
+     +                  Iattraj,indatwr,nstatwr,Jstatwr

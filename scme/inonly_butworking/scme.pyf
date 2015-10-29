@@ -1,0 +1,30 @@
+!    -*- f90 -*-
+! Note: the context of this file is case sensitive.
+
+python module scme ! in 
+    interface  ! in :scme
+        subroutine main(natms,faout) ! in :scme:main.f
+            integer intent(in) :: natms
+            real(kind=8) dimension(3 * natms),intent(out),depend(natms) :: faout
+            integer :: lunout
+            integer :: luninp
+            integer :: lunci
+            integer :: lunco
+            integer :: luncm
+            integer :: lunpot
+            integer :: lunins
+            integer :: luntgr
+            integer :: lunaco
+            integer :: lunvis
+            integer :: lunattr
+            integer :: luncofpi
+            integer :: lunoutfpi
+            integer :: lunqckmin
+            integer :: lunmaxim
+            common /lunits/ lunout,luninp,lunci,lunco,luncm,lunpot,lunins,luntgr,lunaco,lunvis,lunattr,luncofpi,lunoutfpi,lunqckmin,lunmaxim
+        end subroutine main
+    end interface 
+end python module scme
+
+! This file was auto-generated with f2py (version:2).
+! See http://cens.ioc.ee/projects/f2py2e/

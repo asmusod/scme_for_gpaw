@@ -1,0 +1,271 @@
+33a34,36
+> C Added by Fer
+>       logical prnlvl(5)
+> 
+116,117c119,130
+<           CALL GAGAFE(NATMS, RALOCAL, itagl, FAlocal, uTotofim, virTot)
+< cH2O              this gagafe call is strictly only for water code.
+---
+> 
+> cH2OERB    this gagafe call is strictly only for water code.
+> C Modified by Fer
+> C Set the print level.
+> 
+>           do i=1,5
+>             prnlvl(i) = .false.
+>           end do
+> 
+>           call gagafe(nAtms,RaLocal,iTagl,FaLocal,
+>      &                uTotofim,virTot,prnlvl)
+> 
+28c28
+<       subroutine gagafe(nAtms, raOri, itagl, fa, uTot, virial)
+---
+>       subroutine gagafe(nAtms, raOri, itagl, fa, uTot, virial,prnlvl)
+100a101
+>       logical     prnlvl(5)
+190c191,193
+<       if ( firstVisit ) then
+---
+>       Axis = 'xyz'
+>       kk1 = 2.5417709D0
+>       kk2 = 1.88972666351031921149D0
+192,194c195,196
+<         Axis = 'xyz'
+<         kk1 = 2.5417709D0
+<         kk2 = 1.88972666351031921149D0
+---
+> C If prnlvl(2) then print out the multipole moments
+>       if ( prnlvl(2) ) then
+196,197c198
+< C Print out the multipole moments
+< C       write(10,FMT='(1X,A)') '--------------------------------'
+---
+>         write(10,FMT='(1X,A)') '--------------------------------'
+199,204c200,205
+< C       write(10,FMT='(1X,A)') 'Dipole Moment'
+< C       do p=1,3
+< C         write(10,FMT='(1X,3X,A,2F11.5)')
+< C    &          Axis(p:p),
+< C    &          d0(p), d0(p)/kk1
+< C       end do
+---
+>         write(10,FMT='(1X,A)') 'Dipole Moment'
+>         do p=1,3
+>           write(10,FMT='(1X,3X,A,2F11.5)')
+>      &          Axis(p:p),
+>      &          d0(p), d0(p)/kk1
+>         end do
+206,213c207,214
+< C       write(10,FMT='(1X,A)') 'Quadrupole Moment'
+< C       do p=1,3
+< C         do q=p,3
+< C           write(10,FMT='(1X,2X,2A,2F11.5)')
+< C    &          Axis(p:p), Axis(q:q),
+< C    &          q0(p,q), q0(p,q)/kk1*kk2
+< C         end do
+< C       end do
+---
+>         write(10,FMT='(1X,A)') 'Quadrupole Moment'
+>         do p=1,3
+>           do q=p,3
+>             write(10,FMT='(1X,2X,2A,2F11.5)')
+>      &          Axis(p:p), Axis(q:q),
+>      &          q0(p,q), q0(p,q)/kk1*kk2
+>           end do
+>         end do
+215,224c216,225
+< C       write(10,FMT='(1X,A)') 'Octupole Moment'
+< C       do p=1,3
+< C         do q=p,3
+< C           do r=q,3
+< C             write(10,FMT='(1X,1X,3A,2F11.5)')
+< C    &              Axis(p:p), Axis(q:q), Axis(r:r),
+< C    &              o0(p,q,r), o0(p,q,r)/kk1*(kk2)**2
+< C           end do
+< C         end do
+< C       end do
+---
+>         write(10,FMT='(1X,A)') 'Octupole Moment'
+>         do p=1,3
+>           do q=p,3
+>             do r=q,3
+>               write(10,FMT='(1X,1X,3A,2F11.5)')
+>      &              Axis(p:p), Axis(q:q), Axis(r:r),
+>      &              o0(p,q,r), o0(p,q,r)/kk1*(kk2)**2
+>             end do
+>           end do
+>         end do
+226,237c227,238
+< C       write(10,FMT='(1X,A)') 'Hexadecapole Moment'
+< C       do p=1,3
+< C         do q=p,3
+< C           do r=q,3
+< C             do s=r,3
+< C               write(10,FMT='(1X,4A,2F11.5)')
+< C    &                Axis(p:p), Axis(q:q), Axis(r:r), Axis(s:s),
+< C    &                h0(p,q,r,s), h0(p,q,r,s)/kk1*(kk2)**3
+< C             end do
+< C           end do
+< C         end do
+< C       end do
+---
+>         write(10,FMT='(1X,A)') 'Hexadecapole Moment'
+>         do p=1,3
+>           do q=p,3
+>             do r=q,3
+>               do s=r,3
+>                 write(10,FMT='(1X,4A,2F11.5)')
+>      &                Axis(p:p), Axis(q:q), Axis(r:r), Axis(s:s),
+>      &                h0(p,q,r,s), h0(p,q,r,s)/kk1*(kk2)**3
+>               end do
+>             end do
+>           end do
+>         end do
+239,240c240
+< C Print out the polarizabilities
+< C       write(10,FMT='(1X,A)') '--------------------------------'
+---
+>         write(10,FMT='(1X,A)') '--------------------------------'
+242,249c242
+< C       write(10,FMT='(1X,A)') 'DD Polarizability'
+< C       do p=1,3
+< C         do q=p,3
+< C           write(10,FMT='(1X,3X,2A,2F11.5)')
+< C    &          Axis(p:p), Axis(q:q),
+< C    &          dd0(p,q), dd0(p,q)*(kk2)**3
+< C         end do
+< C       end do
+---
+>       end if
+251,260c244,245
+< C       write(10,FMT='(1X,A)') 'DQ Polarizability'
+< C       do p=1,3
+< C         do q=1,3
+< C           do r=q,3
+< C             write(10,FMT='(1X,1X,A,1X,2A,2F11.5)')
+< C    &              Axis(p:p), Axis(q:q), Axis(r:r),
+< C    &              dq0(p,q,r), dq0(p,q,r)*(kk2)**4
+< C           end do
+< C         end do
+< C       end do
+---
+> C If prnlvl(3) then print out the polarizabilities
+>       if ( prnlvl(3) ) then
+262,281c247
+< C       write(10,FMT='(1X,A)') 'QQ Polarizability'
+< C       do p=1,3
+< C         do q=p,3
+< C           do r=p,3
+< C             do s=r,3
+< C               if ( q .le. s ) then
+< C                 write(10,FMT='(1X,2A,1X,2A,2F11.5)')
+< C    &                  Axis(p:p), Axis(q:q), Axis(r:r), Axis(s:s),
+< C    &                  qq0(p,q,r,s), qq0(p,q,r,s)*(kk2)**5
+< C               end if
+< C               if ( (p.eq.1) .and. (q.eq.3) .and.
+< C    &               (r.eq.2) .and. (s.eq.2)       ) then
+< C                 write(10,FMT='(1X,2A,1X,2A,2F11.5)')
+< C    &                  Axis(p:p), Axis(q:q), Axis(r:r), Axis(s:s),
+< C    &                  qq0(p,q,r,s), qq0(p,q,r,s)*(kk2)**5
+< C               end if
+< C             end do
+< C           end do
+< C         end do
+< C       end do
+---
+>         write(10,FMT='(1X,A)') '--------------------------------'
+283c249,256
+< C       write(10,FMT='(1X,A)') '--------------------------------'
+---
+>         write(10,FMT='(1X,A)') 'DD Polarizability'
+>         do p=1,3
+>           do q=p,3
+>             write(10,FMT='(1X,3X,2A,2F11.5)')
+>      &          Axis(p:p), Axis(q:q),
+>      &          dd0(p,q), dd0(p,q)*(kk2)**3
+>           end do
+>         end do
+284a258,291
+>         write(10,FMT='(1X,A)') 'DQ Polarizability'
+>         do p=1,3
+>           do q=1,3
+>             do r=q,3
+>               write(10,FMT='(1X,1X,A,1X,2A,2F11.5)')
+>      &              Axis(p:p), Axis(q:q), Axis(r:r),
+>      &              dq0(p,q,r), dq0(p,q,r)*(kk2)**4
+>             end do
+>           end do
+>         end do
+> 
+>         write(10,FMT='(1X,A)') 'QQ Polarizability'
+>         do p=1,3
+>           do q=p,3
+>             do r=p,3
+>               do s=r,3
+>                 if ( q .le. s ) then
+>                   write(10,FMT='(1X,2A,1X,2A,2F11.5)')
+>      &                  Axis(p:p), Axis(q:q), Axis(r:r), Axis(s:s),
+>      &                  qq0(p,q,r,s), qq0(p,q,r,s)*(kk2)**5
+>                 end if
+>                 if ( (p.eq.1) .and. (q.eq.3) .and.
+>      &               (r.eq.2) .and. (s.eq.2)       ) then
+>                   write(10,FMT='(1X,2A,1X,2A,2F11.5)')
+>      &                  Axis(p:p), Axis(q:q), Axis(r:r), Axis(s:s),
+>      &                  qq0(p,q,r,s), qq0(p,q,r,s)*(kk2)**5
+>                 end if
+>               end do
+>             end do
+>           end do
+>         end do
+> 
+>         write(10,FMT='(1X,A)') '--------------------------------'
+> 
+381,394c388,402
+< C Added by Fer. -------------------------------------------------------------
+<       write(10,FMT='(1X,A)')
+<      &      '--------------------------------------------'
+<       write(10,FMT='(1X,A,2F20.10)')
+<      &      ' Electrostatic Energy: ', uES,   627.5100402*uES/27.211396
+<       write(10,FMT='(1X,A,2F20.10)')
+<      &      ' Dispersion Energy:    ', uDisp, 627.5100402*uDisp/27.211396
+<       write(10,FMT='(1X,A,2F20.10)')
+<      &      ' Repulsion Energy:     ', uCore, 627.5100402*uCore/27.211396
+<       write(10,FMT='(1X,A,2F20.10)')
+<      &      ' Total Energy:         ', uTot,  627.5100402*uTot/27.211396
+<       write(10,FMT='(1X,A)')
+<      &      '--------------------------------------------'
+< C ---------------------------------------------------------------------------
+---
+> C Added by Fer
+>       if ( prnlvl(1) ) then
+>         write(10,FMT='(1X,A)')
+>      &     '--------------------------------------------'
+>         write(10,FMT='(1X,A,2F20.10)')
+>      &     ' Electrostatic Energy: ', uES,   627.5100402*uES/27.211396
+>         write(10,FMT='(1X,A,2F20.10)')
+>      &     ' Dispersion Energy:    ', uDisp, 627.5100402*uDisp/27.211396
+>         write(10,FMT='(1X,A,2F20.10)')
+>      &     ' Repulsion Energy:     ', uCore, 627.5100402*uCore/27.211396
+>         write(10,FMT='(1X,A,2F20.10)')
+>      &     ' Total Energy:         ', uTot,  627.5100402*uTot/27.211396
+>         write(10,FMT='(1X,A)')
+>      &     '--------------------------------------------'
+>       end if
+1307,1309d1306
+< 
+< 
+< 
+1338c1335,1336
+< c                                                                                         
+---
+> c     
+> 
+1345a1344,1350
+> 
+> C Added by Fer
+> C The following code calls a BFGS routine that optimizes the size of the
+> C box used in the calculations.
+> C For the moment we use the average step to set the box optimization step.
+>       call Opt_Box(nAtoms,nAtms,Ra,10,1.0D-03,1.0D-03)
+> 
