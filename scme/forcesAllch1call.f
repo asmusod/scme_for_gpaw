@@ -8,7 +8,7 @@ c
 C     THIS SUBROUTINE COMPUTES THE FORCES by calling GAGAFE for each type of              
 c     interaction.                                                                        
 
-      SUBROUTINE FORCE(eQM,dEQM,FAOUT,ETOUT,natm,QPOLEOUT)
+      SUBROUTINE FORCE(eQM,dEQM,FAOUT,ETOUT,natm,DIPOLEOUT,QPOLEOUT)
 
       implicit real*8 (a-h,o-z)
       integer natm
@@ -16,8 +16,8 @@ c     interaction.
       intent(in) eQM
       real*8 dEQM(3,3,natm/3)
       intent(in) dEQM
-      dimension FAOUT(*), ETOUT(*), QPOLEOUT(*)
-      intent(out) FAOUT, ETOUT, QPOLEOUT
+      dimension FAOUT(*), ETOUT(*), DIPOLEOUT(*),QPOLEOUT(*)
+      intent(out) FAOUT, ETOUT, DIPOLEOUT, QPOLEOUT
 
       include '../commonblks/parameters.cmn'
       include '../commonblks/combaths.cmn'
@@ -122,7 +122,7 @@ cw        write(lunout,*)RALOCAL(1),RALOCAL(2),RALOCAL(3)
 c        print *, indH2O
         if(indH2O) then
           CALL GAGAFE(NATMS, RALOCAL, itagl, FAlocal,
-     +                uTotofim, virTot, ETOUT,eQM,dEQM, natm, QPOLEOUT)
+     +      uTotofim, virTot, ETOUT,eQM,dEQM, natm, DIPOLEOUT, QPOLEOUT)
 cH2O              this gagafe call is strictly only for water code.
         else
 c$$$          CALL GAGAFE(NATMS,RALOCAL,FAlocal,NATMS,RALOCAL,FAlocal,
@@ -252,7 +252,8 @@ c                               between images.
 c    -------------------------------------------------------------                        
 
 
-c  Scale force so that Force = actual force / ax :                                        
+c  Scale force so that Force = actual force / ax :
+c  ASMUS WHAT IS THIS ax SCALING?!?!
       TOTFOR = 0.0
       do i = 1, 3 * NATOMS
          TOTFOR = TOTFOR + FA(i)

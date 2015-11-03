@@ -26,7 +26,7 @@ c23456789012345678901234567890123456789012345678901234567890123456789012
 c        10        20        30        40        50        60        70
 
       subroutine gagafe(nAtms, raOri, itagl, fa, uTot, 
-     $                virial,ETOUT,eQM,dEQM,natm,QPOLEOUT)
+     $                virial,ETOUT,eQM,dEQM,natm,DIPOLEOUT,QPOLEOUT)
 
 c      implicit real*8 (a-h,o-z)
 
@@ -107,8 +107,10 @@ c     Check derivatives
 
 C     Out to ASE
       real*8 ETOUT(3,nAtms(2))
+      real*8 DIPOLEOUT(3,nAtms(2))
       integer ct
       intent(out) ETOUT
+      intent(out) DIPOLEOUT
       real*8 QPOLEOUT(3,3,nAtms(2))
       intent(out) QPOLEOUT
 
@@ -348,10 +350,11 @@ c     Induce dipoles and quadrupoles - qpoles NOT QM interfaced!
 
       end do                    !End of the induction loop
 
-c    get out eT for ase - 2015 hack get out DIPOLE
+c    get out eT and dipoles for ase
       do ct = 1,nAtms(2)
         do i = 1,3
-          ETOUT(i,ct) = dPole(i,ct)
+          ETOUT(i,ct) = eT(i,ct)
+          DIPOLEOUT(i,ct) = dPole(i,ct)
         end do
       end do
 c    get out qpoles for ase

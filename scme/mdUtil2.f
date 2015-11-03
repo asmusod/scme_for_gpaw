@@ -147,10 +147,13 @@ c     Rot2 = Rz[45] Rx[-135]
       det = -b*c*d + c*d*e + a*b*f - b*d*f + b*c*g - c*e*g - a*f*h +
      $     d*f*h - a*b*i + 2*b*d*i - d*e*i - b*g*i + e*g*i + a*h*i - d*h
      $     *i
+      print *,'DET BEFORE START:' 
+      print *,det
 
       flag = 0
       if ((det .lt. 0.1) .and. (det .gt. -0.1)) then
-c         print '(f12.4,$)', det
+         print *, 'Going into rotation, current det:'
+         print '(f12.4,$)', det
 
          do iRot = 1, 3
             do ii = 1, 3
@@ -182,8 +185,8 @@ c         print '(f12.4,$)', det
             det = -b*c*d + c*d*e + a*b*f - b*d*f + b*c*g - c*e*g - a*f*h
      $           +d*f*h - a*b*i + 2*b*d*i - d*e*i - b*g*i + e*g*i + a*h
      $           *i -d*h*i
-
-c$$$         print '(f12.4, $)', det
+C            print *, 'Rotation done, New det:'
+C            print '(f12.4, $)', det
             if (abs(det) .gt. abs(detOld)) then
                detOld = det
                flag = iRot
@@ -207,7 +210,7 @@ c         print '(f12.4, i6, $)', det, flag
       end if
 
       if ((det .lt. 1.e-10) .and. (det .gt. -1.e-10)) then
-         print *, 'Error in inv5(). Det = 0.'
+C         print *, 'Error in inv5(). Det = 0.'
          stop
       end if
 

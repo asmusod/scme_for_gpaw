@@ -15,13 +15,14 @@ c         Canonical, isobaric, microcanonical, isobaric-isoenthalpic.
 c       modify version A of SURF, oct 89.                                                 
 c                                                                                         
       subroutine main(natm, aseCoords,aseBox,eQM,dEQM,
-     $ FAOUT,EPOTOUT,ETOUT,QPOLEOUT)
+     $ FAOUT,EPOTOUT,ETOUT,DIPOLEOUT,QPOLEOUT)
       implicit real*8 (a-h,o-z)
       integer natm
       real*8 aseCoords(3*natm)
       dimension FAOUT(3*natm)
-      real*8 ETOUT(3,natm / 3)
       real*8 EPOTOUT
+      real*8 ETOUT(3,natm / 3)
+      real*8 DIPOLEOUT(3,natm / 3)
       real*8 QPOLEOUT(3,3,natm/3)
       real*8 aseBox(3)
       real*8 eQM(3,natm/3)
@@ -37,6 +38,7 @@ cf2py real(8) intent(in) :: dEQM
 cf2py real(8) intent(out) :: FAOUT
 cf2py real(8) intent(out) :: EPOTOUT 
 cf2py real(8) intent(out) :: ETOUT 
+cf2py real(8) intent(out) :: DIPOLEOUT 
 cf2py real(8) intent(out) :: QPOLEOUT 
 
 c
@@ -139,7 +141,7 @@ cc      write(lunout,200)
 cc200   format(/'   after calling readin ...')                                            
 c                                                                                         
 c      write(6,*) '  Call Setup:'
-      CALL SETUP(eQM,dEQM,FAOUT,EPOTOUT,ETOUT,natm,QPOLEOUT)
+      CALL SETUP(eQM,dEQM,FAOUT,EPOTOUT,ETOUT,natm,DIPOLEOUT,QPOLEOUT)
 c        prepares the input configuration for dynamics, initializes etc.                  
 c                                                                                         
 cc      write(lunout,205)                                                                 
